@@ -44,19 +44,57 @@ For the bot to read all messages in a group chat (instead of just commands), you
 3. Select your bot.
 4. Click **Disable**.
 
-### 4. Running the Bot
+### 4. Running the Bot Locally
 
-Run the bot locally:
+Run the bot locally for testing:
 
 ```bash
 python main.py
 ```
 
-To run the bot in the background on a Linux/cloud server:
+### 5. Deploying to Google Cloud (Compute Engine)
 
-```bash
-nohup python3 main.py > bot.log 2>&1 &
-```
+Since the bot needs to run 24/7, deploying it to a Google Cloud Compute Engine instance is ideal.
+
+1. **SSH into your VM:**
+   Open the Google Cloud Console, go to Compute Engine, and click the "SSH" button next to your instance.
+
+2. **Clone the repository:**
+   ```bash
+   git clone https://github.com/suhaodatascichem/Myanmar-language-translator.git
+   cd Myanmar-language-translator
+   ```
+
+3. **Install Dependencies:**
+   ```bash
+   sudo apt update
+   sudo apt install python3-pip -y
+   pip3 install -r requirements.txt
+   ```
+
+4. **Create the `.env` file on the server:**
+   Use a text editor like `nano` to create the configuration file:
+   ```bash
+   nano .env
+   ```
+   Paste your keys:
+   ```env
+   TELEGRAM_BOT_TOKEN=your_telegram_token
+   GEMINI_API_KEY=your_gemini_key
+   ```
+   Press `Ctrl+O`, `Enter`, and `Ctrl+X` to save and exit.
+
+5. **Run the Bot in the Background (nohup):**
+   To keep the bot running even after you close the SSH terminal, use `nohup`:
+   ```bash
+   nohup python3 main.py > bot.log 2>&1 &
+   ```
+   You can verify it's running by checking the log:
+   ```bash
+   tail -f bot.log
+   ```
+
+*(Alternative: You can also wrap the bot in a Docker container or set it up as a `systemd` service for automatic restarts on reboot).*
 
 ## How It Works
 
