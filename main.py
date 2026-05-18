@@ -10,6 +10,8 @@ from telegram.ext import ApplicationBuilder, ContextTypes, MessageHandler, filte
 load_dotenv()
 TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+ALLOWED_CHAT_IDS = os.getenv("ALLOWED_CHAT_IDS", "").split(",")
+ALLOWED_CHAT_IDS = [x.strip() for x in ALLOWED_CHAT_IDS if x.strip()]
 
 # 2. Configure logging
 logging.basicConfig(
@@ -53,6 +55,17 @@ model = genai.GenerativeModel(
 async def process_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Handles incoming messages, passes them to Gemini, and replies."""
     if not update.message:
+        return
+
+    chat_id = str(update.message.chat_id)
+    user_id = str(update.message.from_user.id)
+    
+    # Log IDs so the user can easily find them in the console
+    logging.info(f"Message from chat_id: {chat_id}, user_id: {user_id}")
+
+    # Security check: If ALLOWED_CHAT_IDS is set, only allow those IDs
+    if ALLOWED_CHAT_IDS and chat_id not in ALLOWED_CHAT_IDS and user_id not in ALLOWED_CHAT_IDS:
+        logging.warning(f"Unauthorized access from {user_id} in chat {chat_id}. Ignoring.")
         return
 
     text = update.message.text or update.message.caption or ""
