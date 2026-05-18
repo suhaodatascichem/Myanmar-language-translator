@@ -1,0 +1,5 @@
+.env
+__pycache__/
+temp_image_*.jpg
+temp_audio_*.ogg
+bot.log
