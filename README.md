@@ -93,8 +93,13 @@ Since the bot needs to run 24/7, deploying it to a Google Cloud Compute Engine i
    ```bash
    tail -f bot.log
    ```
-
-*(Alternative: You can also wrap the bot in a Docker container or set it up as a `systemd` service for automatic restarts on reboot).*
+## update code
+```
+cd ~/Myanmar-language-translator
+nano .env
+pkill -f "python3 main.py"
+nohup python3 main.py > bot.log 2>&1 &
+```
 
 ## How It Works
 
