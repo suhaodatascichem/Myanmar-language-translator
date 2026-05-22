@@ -97,6 +97,7 @@ Since the bot needs to run 24/7, deploying it to a Google Cloud Compute Engine i
 ```
 cd ~/Myanmar-language-translator
 nano .env
+(Add ALLOWED_CHAT_IDS=6415248406, then save with Ctrl+O, Enter, Ctrl+X)
 pkill -f "python3 main.py"
 nohup python3 main.py > bot.log 2>&1 &
 ```
